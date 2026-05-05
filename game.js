@@ -225,11 +225,13 @@ function escapeHtml(s) {
 }
 
 // ---- Mission Loading ----------------------------------------
+const APP_VERSION = "v0.3";
 const _missionCache = {};
 async function loadMission(file) {
   if (_missionCache[file]) return _missionCache[file];
-  const res = await fetch(file);
-  if (!res.ok) throw new Error("Mission-Datei nicht gefunden: " + file);
+  const url = file + "?v=" + APP_VERSION;
+  const res = await fetch(url, { cache: "no-cache" });
+  if (!res.ok) throw new Error("HTTP " + res.status + " bei " + url);
   const json = await res.json();
   _missionCache[file] = json;
   return json;
@@ -243,7 +245,10 @@ async function startMission(missionId) {
   try {
     state.mission = await loadMission(meta.file);
   } catch (e) {
-    alert("Mission konnte nicht geladen werden.");
+    console.error("Mission load failed:", e);
+    alert("Mission konnte nicht geladen werden.\n\n" +
+      "Fehler: " + (e && e.message ? e.message : String(e)) + "\n\n" +
+      "Tipp: Browser-Cache leeren (auf Mac ⌘+⇧+R, auf iPad: Adresse antippen + Enter).");
     return;
   }
 
