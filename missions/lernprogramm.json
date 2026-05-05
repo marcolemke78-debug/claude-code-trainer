@@ -1,0 +1,306 @@
+{
+  "id": "lernprogramm",
+  "title": "Lernprogramm für Leonie",
+  "subtitle": "Mathe Klasse 8 – Quadratische Funktionen",
+  "icon": "📚",
+  "difficulty": 2,
+  "tagline": "Wie startest du eine Schul-Lern-App ohne Brainstorming-Marathon?",
+  "totalScore": 100,
+  "intro": "Sonntagabend. Leonie schreibt am Mittwoch eine Mathe-Arbeit zu quadratischen Funktionen. Sie hängt bei Scheitelpunkt, Nullstellen und Faktorform. Du willst ihr eine kleine Lern-App bauen, die genau diese drei Themen mit interaktiven Übungen abdeckt – und zwar bis morgen Abend.",
+  "levels": [
+    {
+      "id": 1,
+      "title": "Der erste Satz",
+      "scenario": "Du öffnest Claude Code. Was tippst du als allerersten Prompt?",
+      "tip": "Gibt es zu diesem Task vielleicht einen fertigen Skill, den ich kenne?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Lass uns brainstormen, wie Leonies Mathe-App am besten aufgebaut sein sollte.",
+          "score": 5,
+          "verdict": "suboptimal",
+          "feedback": "Brainstorming ist nicht falsch, aber Memory hat bereits eine Blaupause (lernprogramm_blueprint.md) und eine Referenz-Implementierung. Du würdest 10 Min Architektur diskutieren, die schon entschieden ist."
+        },
+        {
+          "letter": "B",
+          "text": "Erstelle ein Lernprogramm für Leonie zu quadratischen Funktionen: Scheitelpunkt, Nullstellen, Faktorform.",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Perfekt. Skill 'lernprogramm-erstellen' triggert sofort, lädt Blaupause, kennt Leonie-Niveau (Klasse 8 M), kennt Style. Konkrete Themen geben Inhalts-Scope.",
+          "consoleLog": [
+            "[20:14:01] Trigger-Scan: 'Lernprogramm' + 'Leonie'",
+            "[20:14:01] Skill aktiviert: lernprogramm-erstellen",
+            "[20:14:01] Memory: lernprogramm_blueprint.md geladen",
+            "[20:14:01] Memory: user_leonie.md (Klasse 8, M-Niveau)",
+            "[20:14:01] Architektur-Schablone: Übungstypen, Datenformat, UI",
+            "[20:14:01] Referenz: ~/Desktop/LE_C_Claude_Code/app/",
+            "[20:14:01] KEIN Brainstorming – Schema steht"
+          ]
+        },
+        {
+          "letter": "C",
+          "text": "/lernprogramm-erstellen",
+          "score": 3,
+          "verdict": "suboptimal",
+          "feedback": "Skill direkt aufrufen ist okay, aber ohne Thema/Fach kein Inhalts-Scope. Ich müsste sofort nachfragen, was wir Sekunden später hätten klären können."
+        },
+        {
+          "letter": "D",
+          "text": "Bau mir eine React-App mit interaktiven Mathe-Aufgaben für 12-Jährige.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Falscher Tech-Stack (Memory: statisches HTML/JS, GitHub Pages – kein React) und falsche Zielgruppen-Beschreibung (Leonie ist Klasse 8 Realschule, M-Niveau – nicht 'für 12-Jährige' generisch)."
+        }
+      ],
+      "insight": "Skills sind eingefrorenes Brainstorming. Wenn ein Skill für deinen Task existiert, brauchst du keine Architektur-Diskussion mehr – du brauchst nur Inhalts-Scope."
+    },
+    {
+      "id": 2,
+      "title": "Niveau und Zielgruppe",
+      "scenario": "Ich frage zurück: 'Soll ich G- oder M-Niveau ansetzen? Welche Klassenstufe?'",
+      "tip": "Wer hat diese Information schon – ich oder du?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Klasse 8, M-Niveau. Erkläre alles mit Alltagsanalogien.",
+          "score": 5,
+          "verdict": "suboptimal",
+          "feedback": "Inhaltlich richtig, aber doppelte Arbeit. Memory user_leonie.md hat genau das schon stehen. Du wiederholst dich – und mein Skill würde das eh anwenden."
+        },
+        {
+          "letter": "B",
+          "text": "Du solltest das aus Memory wissen. Schau dort nach.",
+          "score": 12,
+          "verdict": "correct",
+          "feedback": "Genau richtig. Ich frage manchmal aus Reflex Dinge, die in Memory stehen. Du darfst mich gnadenlos darauf hinweisen – das hält das System ehrlich.",
+          "consoleLog": [
+            "[20:15:22] User-Pushback: 'schau ins Memory'",
+            "[20:15:22] Re-check: user_leonie.md (Klasse 8, Realschule BW, M-Niveau)",
+            "[20:15:22] Re-check: globale CLAUDE.md ('einfache Sprache, Alltagsanalogien')",
+            "[20:15:22] ✅ alle Infos vorhanden – Frage zurückgenommen"
+          ]
+        },
+        {
+          "letter": "C",
+          "text": "Such einfach die Mitte und mach M-Niveau, das passt schon.",
+          "score": 8,
+          "verdict": "suboptimal",
+          "feedback": "Treffer aus Glück. Memory hätte dir Sicherheit gegeben statt Vermutung. Bei Zielgruppen-Fragen lieber präzise als geschätzt."
+        },
+        {
+          "letter": "D",
+          "text": "Mach es einfach so wie für eine Mittelstufe halt üblich.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Vage Antwort führt zu generischem Output. 'Mittelstufe üblich' gibt's nicht – Realschule M-Niveau ist anders als Gymnasium G-Niveau."
+        }
+      ],
+      "insight": "Memory ist mein Gedächtnis. Wenn ich Dinge frage, die dort stehen, ist das ein Bug – nicht ein Feature, das du füttern musst."
+    },
+    {
+      "id": 3,
+      "title": "Übungstypen-Mix",
+      "scenario": "Ich starte den Build und frage: 'Welche Übungstypen soll ich verwenden?' Im Blueprint sind 4 Typen definiert: Multiple Choice, Slider, Drag-and-Drop, Step-by-Step.",
+      "tip": "Was hält Leonie wach – Abwechslung oder Wiederholung?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Nur Multiple Choice, ist am einfachsten zu programmieren.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Programmier-Aufwand ist mein Problem, nicht Leonies. Ein Lernprogramm aus 30× Multiple Choice ermüdet nach 5 Minuten – pädagogisch schwach."
+        },
+        {
+          "letter": "B",
+          "text": "Mix aus Multiple Choice, interaktiven Slidern (Scheitelpunkt verschieben) und SVG-Diagrammen zum Klicken.",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Profi-Mix. Slider lassen Leonie den Scheitelpunkt 'fühlen', SVG passt zu deiner Memory-Vorgabe (scharf, offline, alle Geräte). Touch-freundlich.",
+          "consoleLog": [
+            "[20:18:44] Übungstypen festgelegt:",
+            "[20:18:44]   ↳ Multiple Choice (Verständnisfragen)",
+            "[20:18:44]   ↳ Slider (Scheitelpunkt verschieben, Parabel zeigt Auswirkung)",
+            "[20:18:44]   ↳ SVG-Klick (Nullstellen markieren)",
+            "[20:18:44]   ↳ Step-by-Step (Faktorisieren mit Hint-Buttons)",
+            "[20:18:44] Touch-Targets: ≥44px (Memory: globale CLAUDE.md)"
+          ]
+        },
+        {
+          "letter": "C",
+          "text": "Open-ended Eingabefelder. Leonie tippt die Lösung ein, ich werte aus.",
+          "score": 3,
+          "verdict": "suboptimal",
+          "feedback": "Bei Mathe-Termen hat das einen Killer: Schreibweise-Varianten. '(x-2)(x+3)' vs. '(x+3)(x-2)' vs. 'x²+x-6' – alle richtig, aber Auswerter-Albtraum. Frust-Risiko."
+        },
+        {
+          "letter": "D",
+          "text": "Lass uns überlegen, welche Übungstypen pädagogisch Sinn machen.",
+          "score": 5,
+          "verdict": "suboptimal",
+          "feedback": "Brainstorming, das im Blueprint schon abgeschlossen ist. Verschwendet Zeit, die Leonie heute Abend lernen will."
+        }
+      ],
+      "insight": "Pädagogischer Mix schlägt programmier-effiziente Monotonie. Die Frage ist nie 'was ist am schnellsten gebaut' – sie ist 'was hält die Lernende drin'."
+    },
+    {
+      "id": 4,
+      "title": "Inhalts-Recherche",
+      "scenario": "Ich brauche typische Aufgaben aus dem Realschul-Curriculum (BW) für quadratische Funktionen. Wie organisierst du das, ohne dass der App-Bau stoppt?",
+      "tip": "Welche Tasks sind unabhängig voneinander – und was darf parallel laufen?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Mach erst die Recherche, dann den Code.",
+          "score": 5,
+          "verdict": "suboptimal",
+          "feedback": "Sequenziell ist okay, aber langsam. Die UI-Struktur (HTML/CSS) hängt nicht von Aufgabentexten ab. Beides kann parallel laufen."
+        },
+        {
+          "letter": "B",
+          "text": "Starte einen Subagent für Schulbuch-Aufgaben-Recherche, während du den UI-Code parallel baust.",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Volltreffer. Skill dispatching-parallel-agents – Subagent recherchiert Aufgaben (5 Min), während Hauptprozess UI baut (5 Min). 5 Min statt 10 Min.",
+          "consoleLog": [
+            "[20:21:10] Spawne Subagent in einem Tool-Block:",
+            "[20:21:10]   ↳ Subagent: Recherche typischer BW-Realschule M-Niveau Aufgaben",
+            "[20:21:10]   ↳   Quellen: Lambacher, Schnittpunkt, Bildungsplan BW 2026",
+            "[20:21:10] Hauptprozess: UI-Skeleton + Datenformat",
+            "[20:26:08] Subagent fertig: 18 Aufgaben in 3 Schwierigkeitsstufen",
+            "[20:26:08] Hauptprozess fertig: UI rendert Beispiel-Aufgabe",
+            "[20:26:09] Merge: Aufgaben in JSON-Datenstruktur einfügen"
+          ]
+        },
+        {
+          "letter": "C",
+          "text": "Frag mich, was Leonies Lehrerin gemacht hat.",
+          "score": 8,
+          "verdict": "suboptimal",
+          "feedback": "Sinnvolle Quelle, aber unterbricht deinen Arbeitsfluss und verschiebt Verantwortung zu dir. Oft besser: Recherche zuerst, dann gezielt nachfragen wenn Lücke."
+        },
+        {
+          "letter": "D",
+          "text": "Erfinde gute Aufgaben aus dem Bauch heraus.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Risiko: nicht curriculum-konform. Eine Mathe-App, deren Aufgaben nicht zur Klassenarbeit passen, ist für Leonie wertlos."
+        }
+      ],
+      "insight": "Subagents glänzen bei Recherche, weil sie Quellen lesen, ohne deinen Hauptkontext zu fluten. Dispatch in einem einzigen Tool-Block – sonst doppelte Wartezeit."
+    },
+    {
+      "id": 5,
+      "title": "Mobile-Pflicht",
+      "scenario": "Die App ist fertig auf dem Desktop. Bevor du Leonie den Link gibst – was ist dein nächster Schritt?",
+      "tip": "Auf welchem Gerät lernt Leonie meistens?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Push, Link an Leonie, fertig. Auf Desktop sieht's gut aus.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Memory + globale CLAUDE.md sagen klar: vor Fertigmeldung iPad/iOS-Safari prüfen. Du würdest das jetzt überspringen – und Leonie schickt dir morgen einen Bug."
+        },
+        {
+          "letter": "B",
+          "text": "Test auf iPad-Safari. Touch-Targets, Tastatur-Verhalten, Slider-Drag, Performance.",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Pflicht-Schritt. Slider auf Touch ist anders als auf Maus, virtuelle Tastatur überdeckt manchmal Inputs. Genau das macht Mobile-Tests teuer wert.",
+          "consoleLog": [
+            "[20:48:02] Mobile-Test gestartet (iPad-Safari)",
+            "[20:48:02] Touch-Targets ≥44px ✓",
+            "[20:48:02] Slider-Drag auf Touch ✓",
+            "[20:48:02] Virtuelle Tastatur überdeckt Eingabe ✗ → fix scrollIntoView",
+            "[20:48:02] Performance: 4 Slider gleichzeitig → ruckelt ✗ → debounce",
+            "[20:48:02] 2 Bugs → Fix-Subagents starten"
+          ]
+        },
+        {
+          "letter": "C",
+          "text": "iPhone-Optimierung machen, das ist wichtiger als iPad.",
+          "score": 3,
+          "verdict": "suboptimal",
+          "feedback": "Falsche Zielgruppe. Leonie nutzt das iPad zum Lernen – nicht iPhone. iPhone-only Optimierung verfehlt das eigentliche Gerät."
+        },
+        {
+          "letter": "D",
+          "text": "Egal, Leonie kann das ja am Desktop machen.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Annahme ohne Beleg. Realität: Schüler lernen heute oft mit iPad, vor allem wenn Eltern den Mac brauchen. Defensive Annahme schlägt optimistische."
+        }
+      ],
+      "insight": "Bei jedem Web-Projekt: Welches Gerät nutzt die Zielperson wirklich? Ein Mobile-Test, der einmal Bugs findet, hat sich für alle künftigen Projekte amortisiert."
+    },
+    {
+      "id": 6,
+      "title": "Deploy + Memory",
+      "scenario": "App läuft auf iPad, Bugs gefixt. Letzter Schritt vor 'fertig'?",
+      "tip": "Was hilft dem nächsten Lernprogramm – und mir – am meisten?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Deploy auf GitHub Pages und MEMORY.md unter 'Leonie Lernprogramme' aktualisieren.",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Doppelpack: Live für Leonie + Memory für künftige Apps. Beim nächsten Lernprogramm habe ich Pfad, Repo, Style automatisch im Kopf.",
+          "consoleLog": [
+            "[21:02:11] git add + commit + push",
+            "[21:02:14] gh repo create + GitHub Pages enable",
+            "[21:02:30] Memory-Write:",
+            "[21:02:30]   ↳ project_leonie_mathe_quadratische_funktionen.md",
+            "[21:02:30]   ↳   Pfad, Repo, Live-URL, Themen, Stand",
+            "[21:02:30] MEMORY.md-Index ergänzt",
+            "[21:02:31] ✅ live: marcolemke78-debug.github.io/...",
+            "[21:02:31] Link an Leonie geschickt"
+          ]
+        },
+        {
+          "letter": "B",
+          "text": "Speicher's lokal, Leonie kann es bei mir am Mac aufrufen.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Bricht Leonies Lerngewohnheit. Sie lernt auf dem iPad in ihrem Zimmer. Lokal-only zwingt sie an deinen Mac – die App wird ungenutzt."
+        },
+        {
+          "letter": "C",
+          "text": "Push, Link senden, fertig. Memory brauchen wir nicht.",
+          "score": 5,
+          "verdict": "suboptimal",
+          "feedback": "Funktioniert für jetzt. Verlierst aber jeden Lerneffekt für die nächsten 5 Lernprogramme – die du dann jedes Mal neu erklären musst."
+        },
+        {
+          "letter": "D",
+          "text": "Sende Marco die Files per Email zum Selbst-Hochladen.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Umweg. gh ist authentifiziert, Pages aktivierbar mit einem API-Call. Email-Schritt ist Stein-Zeit für ein Tool, das in 30 Sekunden online sein kann."
+        }
+      ],
+      "insight": "Jedes erfolgreiche Projekt hinterlässt zwei Artefakte: das Produkt (für die Zielgruppe) und Memory (für künftige Sessions). Eins ohne das andere ist halbgare Arbeit."
+    }
+  ],
+  "endings": {
+    "perfect": {
+      "minScore": 90,
+      "title": "🏆 Skill-Whisperer",
+      "text": "Du nutzt Skills, Memory und Subagents wie selbstverständlich. Leonies App stand schneller, als ihre Mathe-Arbeit es brauchte."
+    },
+    "great": {
+      "minScore": 70,
+      "title": "🥇 Routinier",
+      "text": "Du verstehst, wann Skills das Brainstorming ersetzen. Achte noch auf Memory-Pushbacks – ich frage manchmal aus Reflex Dinge, die ich wissen sollte."
+    },
+    "good": {
+      "minScore": 50,
+      "title": "🥈 Auf gutem Weg",
+      "text": "Solide Grundlagen. Erinner dich: Jeder Skill ist eingefrorenes Brainstorming – wenn er existiert, frag nicht, was wir schon wissen."
+    },
+    "weak": {
+      "minScore": 0,
+      "title": "🥉 Nochmal mit System",
+      "text": "Spiel die Mission nochmal – diesmal achte besonders auf Memory-Lookups und Skill-Trigger."
+    }
+  }
+}

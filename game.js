@@ -4,38 +4,52 @@
    ============================================================ */
 
 // ---- Mission Index (extensible) -----------------------------
+// Metadaten hier zentral pflegen, damit die Grid-Anzeige nicht von einem
+// JSON-Fetch abhängt (war Auslöser für den iPad-Render-Bug in v0.1).
 const MISSIONS_INDEX = [
   {
     id: "blechntakt-landing",
     file: "missions/blechntakt-landing.json",
+    title: "Landing Page für Blech'N'Takt",
+    subtitle: "Sommerkonzert 15.07.2026",
+    icon: "🎺",
+    difficulty: 1,
+    tagline: "Lerne, wann du welches Trigger-Wort einsetzt – am Beispiel einer Band-Landing-Page.",
+    levelCount: 6,
     locked: false
   },
   {
     id: "lernprogramm",
+    file: "missions/lernprogramm.json",
     title: "Lernprogramm für Leonie",
-    subtitle: "Bald verfügbar",
+    subtitle: "Mathe Klasse 8 – Quadratische Funktionen",
     icon: "📚",
     difficulty: 2,
     tagline: "Wie startest du eine Schul-Lern-App ohne Brainstorming-Marathon?",
-    locked: true
+    levelCount: 6,
+    locked: false
   },
   {
     id: "gowin-analyse",
-    title: "GoWin Analyse-Session",
-    subtitle: "Bald verfügbar",
+    file: "missions/gowin-analyse.json",
+    title: "GoWin Spieltag-Analyse",
+    subtitle: "Skill, Memory & API",
     icon: "📊",
     difficulty: 3,
-    tagline: "Skills, Memory und Subagents im Kontra-System richtig orchestrieren.",
-    locked: true
+    tagline: "Skill-Trigger, CSV-Erkennung, Wettzettel-Pflicht und Manager-Modus richtig orchestrieren.",
+    levelCount: 6,
+    locked: false
   },
   {
     id: "webapp-from-scratch",
+    file: "missions/webapp-from-scratch.json",
     title: "Web-App von Null",
-    subtitle: "Bald verfügbar",
+    subtitle: "Allgemeine Best Practices",
     icon: "🚀",
     difficulty: 2,
-    tagline: "Worktree, Tests, Deploy – wann lohnt was bei einem neuen Projekt?",
-    locked: true
+    tagline: "Worktree, Tests, Deploy – wann lohnt was bei einem brandneuen Projekt?",
+    levelCount: 6,
+    locked: false
   }
 ];
 
@@ -155,7 +169,7 @@ function renderStats() {
 }
 
 // ---- Mission Grid -------------------------------------------
-async function renderMissionGrid() {
+function renderMissionGrid() {
   const grid = document.getElementById("mission-grid");
   grid.textContent = "";
   const data = loadStorage();
@@ -165,41 +179,28 @@ async function renderMissionGrid() {
     card.className = "mission-card" + (meta.locked ? " locked" : "");
     card.disabled = !!meta.locked;
 
-    let displayMeta = meta;
-
-    // Bei freigeschalteten Missionen lade JSON für Titel/Anzahl-Levels
-    if (!meta.locked) {
-      try {
-        const m = await loadMission(meta.file);
-        displayMeta = {
-          ...meta,
-          title: m.title,
-          subtitle: m.subtitle,
-          icon: m.icon,
-          difficulty: m.difficulty,
-          tagline: m.tagline,
-          levelCount: m.levels.length,
-          totalScore: m.totalScore
-        };
-      } catch (e) {
-        console.error("Mission konnte nicht geladen werden:", meta.file, e);
-        continue;
-      }
-    }
-
     const best = data.bests[meta.id];
     const diffDots = Array.from({ length: 3 }, (_, i) =>
-      `<span class="${i < (displayMeta.difficulty || 1) ? "on" : ""}"></span>`
+      `<span class="${i < (meta.difficulty || 1) ? "on" : ""}"></span>`
     ).join("");
 
+    let footRight;
+    if (meta.locked) {
+      footRight = "🔒 LOCKED";
+    } else if (best != null) {
+      footRight = `BEST <span class="mission-best">${best}</span>`;
+    } else {
+      footRight = `${meta.levelCount || ""} Level`;
+    }
+
     card.innerHTML = `
-      <span class="mission-icon">${displayMeta.icon || "🎯"}</span>
-      <div class="mission-card-title">${escapeHtml(displayMeta.title || meta.id)}</div>
-      <div class="mission-card-subtitle">${escapeHtml(displayMeta.subtitle || "")}</div>
-      <div class="mission-card-tag">${escapeHtml(displayMeta.tagline || "")}</div>
+      <span class="mission-icon">${meta.icon || "🎯"}</span>
+      <div class="mission-card-title">${escapeHtml(meta.title || meta.id)}</div>
+      <div class="mission-card-subtitle">${escapeHtml(meta.subtitle || "")}</div>
+      <div class="mission-card-tag">${escapeHtml(meta.tagline || "")}</div>
       <div class="mission-card-foot">
         <span class="difficulty" aria-label="Schwierigkeit">${diffDots}</span>
-        <span>${meta.locked ? "🔒 LOCKED" : (best != null ? `BEST <span class="mission-best">${best}</span>` : `${displayMeta.levelCount || ""} Level`)}</span>
+        <span>${footRight}</span>
       </div>
     `;
 
@@ -400,7 +401,7 @@ function resetStats() {
 // ---- Init ---------------------------------------------------
 async function init() {
   renderStats();
-  await renderMissionGrid();
+  renderMissionGrid();
 
   // Boot-Animation
   const bootEl = document.getElementById("boot-typing");

@@ -1,0 +1,306 @@
+{
+  "id": "gowin-analyse",
+  "title": "GoWin Spieltag-Analyse",
+  "subtitle": "Skill, Memory & API",
+  "icon": "📊",
+  "difficulty": 3,
+  "tagline": "Skill-Trigger, CSV-Erkennung, Wettzettel-Pflicht und Manager-Modus richtig orchestrieren.",
+  "totalScore": 100,
+  "intro": "Sonntag, 18:00. Drei CSV-Dateien sind im GoWin-Ordner: 'TECHNIKEN VORHERSAGE 2026-05-10.csv', 'VORHERSAGE ALLE LIGEN FIX(-10) 2026-05-10.csv' und 'MAN-4(-10) ALLE LIGEN 2026-05-10.csv'. Außerdem liegt 'Wettzettel_10-05-2026.docx' bereit, halb ausgefüllt. Du willst den Spieltag durchziehen.",
+  "levels": [
+    {
+      "id": 1,
+      "title": "Spieltag-Start",
+      "scenario": "Du öffnest Claude Code. Was tippst du, um den Spieltag zu starten?",
+      "tip": "Gibt es einen Master-Skill, der alle drei Systeme orchestriert?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "/gowin",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Master-Trigger. Skill erwartet 3 CSVs, lädt project_blechntakt-Memories – Moment, Quatsch, GoWin-Memories – und startet alle 3 Sub-Systeme parallel.",
+          "consoleLog": [
+            "[18:01:33] Slash-Command: /gowin",
+            "[18:01:33] Skill: gowin (Master) aktiviert",
+            "[18:01:33] Memory-Bulk-Load:",
+            "[18:01:33]   ↳ feedback_gowin_pick_quelle_lookup.md",
+            "[18:01:33]   ↳ feedback_gowin_wettzettel_format.md",
+            "[18:01:33]   ↳ feedback_gowin_wettzettel_abgleich.md",
+            "[18:01:33]   ↳ feedback_gowin_duplikat_check.md",
+            "[18:01:33]   ↳ feedback_gowin_api_football.md",
+            "[18:01:33]   ↳ feedback_gowin_autonomie.md (Manager-Modus)",
+            "[18:01:33] CSV-Erkennung läuft → 3 Sub-Skills"
+          ]
+        },
+        {
+          "letter": "B",
+          "text": "Analysier mir die CSVs.",
+          "score": 5,
+          "verdict": "suboptimal",
+          "feedback": "Funktioniert ungefähr (Memory-Index hat das Wort 'CSV'), aber Slash-Command ist sauberer und expliziter. Vermeidet Verwechslungs-Risiko."
+        },
+        {
+          "letter": "C",
+          "text": "Lass uns brainstormen, welche Picks heute interessant sind.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Falsche Frage. Die Modelle (9-Ligen, Daily Scout, Kontra v3) entscheiden – nicht 'unser Bauchgefühl'. Brainstorming hier widerspricht dem Systemcharakter."
+        },
+        {
+          "letter": "D",
+          "text": "Trainiere ein neues Modell auf den heutigen Daten.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Komplettes Missverständnis: Die Modelle existieren, sind validiert, Re-Validierung ist alle 3 Monate (siehe feedback_gowin_backtest_zyklus.md). Heute = Picks, nicht Training."
+        }
+      ],
+      "insight": "Slash-Commands sind die schnellste Skill-Auslösung. Wenn ein Master-Skill für deinen Workflow existiert, nimm ihn statt natürlicher Sprache zu hoffen."
+    },
+    {
+      "id": 2,
+      "title": "CSV-Erkennung",
+      "scenario": "Drei CSVs liegen vor: TECHNIKEN VORHERSAGE, VORHERSAGE ALLE LIGEN FIX(-10), und MAN-4(-10) ALLE LIGEN. Welcher Skill für welche?",
+      "tip": "Jeder Skill hat ein eigenes CSV-Filename-Muster im Trigger.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Alle drei sind dasselbe System – einmal durchlaufen reicht.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Drei CSVs = drei verschiedene Strategien. Vermischen führt zu falschen Picks und kaputter Backtest-Auswertung."
+        },
+        {
+          "letter": "B",
+          "text": "TECHNIKEN VORHERSAGE → 9-Ligen-System. VORHERSAGE ALLE LIGEN → Daily Scout. MAN-4(-10) → Kontra v3.",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Genau die Memory-Trigger. Jeder Skill prüft den Filename-Anfang und aktiviert nur, wenn passt. Drei parallele Sub-Skills, keine Verwechslung.",
+          "consoleLog": [
+            "[18:02:14] Filename-Routing:",
+            "[18:02:14]   TECHNIKEN VORHERSAGE...     → gowin-9-ligen-system",
+            "[18:02:14]   VORHERSAGE ALLE LIGEN FIX  → gowin-daily-scout",
+            "[18:02:14]   MAN-4(-10) ALLE LIGEN      → gowin-kontra (v3)",
+            "[18:02:14] Spawn 3 Sub-Skills parallel",
+            "[18:02:14] Pure-1 + ConfGuest≥50 + X2-Odds≥1.40 (Kontra-Filter)"
+          ]
+        },
+        {
+          "letter": "C",
+          "text": "Ich frage Marco, welcher Skill für welche CSV ist.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Babysitting hoch zwei. Skill-Beschreibungen enthalten exakt die Filename-Muster als Trigger. Marco fragen = mein Job nicht erledigen."
+        },
+        {
+          "letter": "D",
+          "text": "Mach es zur Sicherheit dreimal mit jedem Skill, dann nehmen wir das beste Ergebnis.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "9× Arbeit für 1× Wert. Außerdem: Cherry-Picking aus drei Auswertungen verfälscht jede Statistik – das Anti-Muster im Backtesting."
+        }
+      ],
+      "insight": "Skills triggern auf konkrete Muster. Wenn drei Skills nebeneinander existieren, gibt es einen guten Grund – jeder ist auf seinen Datentyp validiert."
+    },
+    {
+      "id": 3,
+      "title": "Wettzettel-Pflicht",
+      "scenario": "Picks sind generiert. Du willst die Spielstände vom Vortag in die DB eintragen. Wie gehst du vor?",
+      "tip": "Welche Datei ist autoritativ – die DB oder der Wettzettel?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Tippe die Spielstände direkt in die DB ein, fertig.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Verstoß gegen feedback_gowin_wettzettel_abgleich.md. Wettzettel_DD-MM-YYYY.docx ist autoritativ – DB ist nur das Abbild. Reihenfolge falsch herum."
+        },
+        {
+          "letter": "B",
+          "text": "Lade Wettzettel_10-05-2026.docx, gleiche jeden Eintrag mit DB ab, frage bei Lücken aktiv nach.",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Pflicht-Workflow. Wettzettel ist Single Source of Truth. Duplikat-Check (feedback_gowin_duplikat_check.md) verhindert Doppel-Einträge.",
+          "consoleLog": [
+            "[18:09:01] Read: Wettzettel_10-05-2026.docx",
+            "[18:09:01] Format-Check: 8 Spalten + Min-Quote ✓",
+            "[18:09:02] Abgleich: 7 Picks im Wettzettel, 5 in DB",
+            "[18:09:02] 2 Picks fehlen → aktiv nachfragen, NICHT raten",
+            "[18:09:02] Duplikat-Check: Liga + Teams + Datum gegen DB",
+            "[18:09:02] 1 möglicher Doppel-Eintrag → Marco fragen"
+          ]
+        },
+        {
+          "letter": "C",
+          "text": "Schreib alle in die DB, ignoriere den Wettzettel – DB ist sowieso der bessere Speicher.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Strikt gegen Memory-Regel. Wenn DB und Wettzettel divergieren, gewinnt Wettzettel. DB ohne Wettzettel-Sync ist potenziell falsch."
+        },
+        {
+          "letter": "D",
+          "text": "Eröffne einen neuen Wettzettel und übertrag DB-Einträge dorthin.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Falsche Richtung. Wettzettel hat fixes Format und ist die Quelle – nicht die Senke."
+        }
+      ],
+      "insight": "In Datenflüssen muss klar sein, was Quelle und was Abbild ist. Hier: Wettzettel = Quelle (Marco trägt zuerst dort ein), DB = Abbild für Auswertung."
+    },
+    {
+      "id": 4,
+      "title": "Endstände abrufen",
+      "scenario": "Du brauchst die Endstände der gestrigen Spiele. Marco ist gerade nicht erreichbar.",
+      "tip": "Wir haben eine API angebunden – wo lag nochmal der Key?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Marco fragen, wenn er online kommt.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Verstoß gegen feedback_gowin_api_football.md – Endstände werden automatisiert abgerufen. Marco fragen ist Stein-Zeit."
+        },
+        {
+          "letter": "B",
+          "text": "API-Football abrufen, Key liegt in ~/Desktop/G.W./.env als API_FOOTBALL_KEY (Free-Tier 100 Calls/Tag).",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Genau richtig. Memory weiß: Endpoint api-sports.io v3, Free-Tier-Limit, Key-Pfad. Alles automatisierbar.",
+          "consoleLog": [
+            "[18:14:22] Read: ~/Desktop/G.W./.env",
+            "[18:14:22] API_FOOTBALL_KEY: gho_***",
+            "[18:14:22] GET api-sports.io/v3/fixtures?date=2026-05-09&league=...",
+            "[18:14:24] 23 Spiele, 23 Endstände",
+            "[18:14:24] Free-Tier: 7/100 Calls heute",
+            "[18:14:25] DB-Update mit Endständen"
+          ]
+        },
+        {
+          "letter": "C",
+          "text": "Manuell auf Sportseiten nachschauen und ins System tippen.",
+          "score": 3,
+          "verdict": "suboptimal",
+          "feedback": "Funktioniert, aber unnötig. 23 Spiele × 30 Sekunden manuell = 11 Min. API-Call: 2 Sekunden + Datenkonsistenz."
+        },
+        {
+          "letter": "D",
+          "text": "Lass die Endstände leer – die kommen schon irgendwann.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Backtest-Auswertung kollabiert ohne Endstände – die Calibration-Pipeline braucht resolved Predictions, sonst keine Iso-Regression."
+        }
+      ],
+      "insight": "Memory ist nicht nur für Regeln, sondern auch für Werkzeug-Pfade. API-Endpoints, Datei-Locations, Credentials-Ablagen – alles, was sich in 30 Sek selbst lookup-bar macht."
+    },
+    {
+      "id": 5,
+      "title": "Manager-Modus",
+      "scenario": "Du entdeckst beim Auswerten, dass Kontra v3 in den letzten 3 Wochen schwächer läuft. Was tust du?",
+      "tip": "Wo ist die Grenze zwischen 'selbst entscheiden' und 'Marco fragen'?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Kontra v3 deaktivieren, neue Strategie definieren – ich treffe selbst die Entscheidung.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Verstoß gegen Manager-Modus-Memory. Strategie-Brüche, Anbieter-Wechsel und Wett-Platzierung sind Marcos Hoheit. Eigenmächtig = vertrauensschädlich."
+        },
+        {
+          "letter": "B",
+          "text": "Routine-DB-Update mache ich selbst, aber bei Strategie-Schwäche melde ich aktiv: 'Kontra v3 unter Erwartung – Re-Evaluierung sinnvoll?'",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Manager-Modus richtig angewandt. Routine eigenständig + proaktive Meldung bei Strategie-Auffälligkeit + Entscheidung beim Manager.",
+          "consoleLog": [
+            "[18:31:08] Routine-Auswertung: ROI letzte 3 Wochen",
+            "[18:31:08] Kontra v3: -8.2% (Erwartung +15-20%)",
+            "[18:31:08] Walk-Forward Hold-Out CI: aktualisieren",
+            "[18:31:08] → Aktiv-Meldung: 'Kontra v3 schwach. Re-Eval?'",
+            "[18:31:08] DB-Update gemacht, Strategie-Entscheidung wartet auf Marco"
+          ]
+        },
+        {
+          "letter": "C",
+          "text": "Frag bei jedem Auswertungs-Schritt nach, sicher ist sicher.",
+          "score": 5,
+          "verdict": "suboptimal",
+          "feedback": "Zu defensiv. Manager-Modus erlaubt Routine-Tasks ohne Rückfrage. Permanente Rückfragen sind selbst eine Form von schlechtem Service."
+        },
+        {
+          "letter": "D",
+          "text": "Eigenmächtig neue Wetten platzieren, um den Drop auszugleichen.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Wetten platzieren ist NIE meine Hoheit – das ist die rote Linie aus Memory. Auch nicht 'aus guter Absicht'."
+        }
+      ],
+      "insight": "Autonomie ist kein Schalter, sondern ein Spektrum. Manager-Modus heißt: Routine-Tasks ja, Strategie-Brüche nein, Geld-Entscheidungen niemals. Die rote Linie kennen ist wichtiger als Geschwindigkeit."
+    },
+    {
+      "id": 6,
+      "title": "Backtest-Zyklus",
+      "scenario": "Es ist der 1. Juni 2026. Marco loggt sich ein, fragt nach normalem Spieltag. Was machst du proaktiv?",
+      "tip": "Was sagt feedback_gowin_backtest_zyklus.md zum 1. eines Monats?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Normaler Spieltag, ich frage Marco bei Bedarf nach Backtest.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Passiv warten ist explizit gegen Memory: 'Backtest-Zyklus aktiv einfordern' (feedback_gowin_backtest_zyklus.md). 1. eines Monats = Refresh-Trigger."
+        },
+        {
+          "letter": "B",
+          "text": "'1. Juni – Zeit für Fokus-Liga-Refresh. Soll ich starten?' Plus: nächste Kontra-v3-Re-Validierung am 23.07.2026 erinnern.",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Aktiver Manager-Reflex. Memory speichert das Datum, ich erinnere von selbst – auch an die zukünftige Re-Validierung in 7 Wochen.",
+          "consoleLog": [
+            "[09:14:02] Date-Check: 2026-06-01 → 1. eines Monats",
+            "[09:14:02] feedback_gowin_backtest_zyklus.md → Reflex aktiviert",
+            "[09:14:02] Aktiv-Meldung: Fokus-Liga-Refresh fällig",
+            "[09:14:02] Vorausschau: nächste Kontra-v3-Full-Re-Val 2026-07-23",
+            "[09:14:02] Nicht passiv warten, sondern Marco klar machen: 'jetzt Zeit'"
+          ]
+        },
+        {
+          "letter": "C",
+          "text": "Mache stillschweigend einen kompletten Re-Backtest aller Strategien.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Eigenmächtig + verschwenderisch. Marco entscheidet, was und wann gebacktested wird – ich melde nur die Fälligkeit."
+        },
+        {
+          "letter": "D",
+          "text": "Lösche alte Picks, fange frisch an – neuer Monat, saubere Tafel.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Datenverlust mit absurder Begründung. Alte Picks sind Trainingssignal für Calibration. Löschen = Strategie-Selbstmord."
+        }
+      ],
+      "insight": "Manche Memories sind Termin-Reminder. Statt warten, dass Marco fragt, melde ich mich von selbst – das ist gelebte Verantwortlichkeit, kein lästiges Gerede."
+    }
+  ],
+  "endings": {
+    "perfect": {
+      "minScore": 90,
+      "title": "🏆 Routine-Stratege",
+      "text": "Manager-Modus, Skill-Routing, Memory-Reflexe – sitzt alles. Marco kann Sonntagabend ruhig im Garten sein, du fährst den Spieltag autonom durch."
+    },
+    "great": {
+      "minScore": 70,
+      "title": "🥇 Verlässlicher Co-Pilot",
+      "text": "Du kennst die roten Linien (Wett-Platzierung, Strategie-Brüche) und respektierst sie. Bei Termin-Reminders darfst du noch proaktiver sein."
+    },
+    "good": {
+      "minScore": 50,
+      "title": "🥈 Solides Verständnis",
+      "text": "Die Skill-Trennung zwischen 9-Ligen, Daily Scout und Kontra musst du noch verinnerlichen. CSV-Filename ist immer der erste Hinweis."
+    },
+    "weak": {
+      "minScore": 0,
+      "title": "🥉 Achtung Datenchaos",
+      "text": "Die GoWin-Workflows haben harte Regeln (Wettzettel = Quelle, API-Football für Endstände, Manager-Modus). Spiel nochmal mit Fokus auf Memory-Reflexe."
+    }
+  }
+}

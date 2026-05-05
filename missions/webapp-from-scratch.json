@@ -1,0 +1,308 @@
+{
+  "id": "webapp-from-scratch",
+  "title": "Web-App von Null",
+  "subtitle": "Allgemeine Best Practices",
+  "icon": "🚀",
+  "difficulty": 2,
+  "tagline": "Worktree, Tests, Deploy – wann lohnt was bei einem brandneuen Projekt?",
+  "totalScore": 100,
+  "intro": "Mittwoch Pause im Lehrerzimmer. Ein Kollege fragt: 'Du, kannst du mir was bauen, das aus Klassenarbeitspunkten automatisch Noten nach BW-Schlüssel berechnet? Mehrere Aufgaben, Punkte eintragen, Note rauskriegen, Klassenstatistik wäre cool.' Du sagst zu. Es gibt KEINEN bestehenden Skill, KEIN bestehendes Repo dafür.",
+  "levels": [
+    {
+      "id": 1,
+      "title": "Erster Satz",
+      "scenario": "Du öffnest abends Claude Code. Was tippst du?",
+      "tip": "Gibt es zu diesem Task einen passenden Skill in deiner Library?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Bau mir eine React-App mit TypeScript für Notenrechnung.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Tech-Stack-Entscheidung VOR der Anforderungs-Klärung. Vielleicht reicht statisches HTML – React+TS wäre zwei Tage Setup für ein 200-Zeilen-Tool."
+        },
+        {
+          "letter": "B",
+          "text": "Lass uns brainstormen für eine Notenrechner-Web-App: Aufgabenpunkte → Note nach BW-Schlüssel, mit Klassenstatistik.",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Korrekter Start. Kein passender Skill, viele unklare Punkte (welcher Notenschlüssel, Eingabe-Format, Mehrere Aufgaben, Druck-Layout, Persistierung). Brainstorming bringt Klarheit.",
+          "consoleLog": [
+            "[20:14:01] Trigger-Scan: kein Skill matched",
+            "[20:14:01] Skill aktiviert: superpowers:brainstorming",
+            "[20:14:01] Stelle gezielte Fragen:",
+            "[20:14:01]   ↳ Welcher Notenschlüssel? (BW Realschule? G/M?)",
+            "[20:14:01]   ↳ Eingabe pro Aufgabe oder Gesamt?",
+            "[20:14:01]   ↳ Persistenz nötig?",
+            "[20:14:01]   ↳ Druck-Layout für Lehrer?",
+            "[20:14:01]   ↳ Mehrere Klassen oder nur eine?"
+          ]
+        },
+        {
+          "letter": "C",
+          "text": "/lernprogramm-erstellen Notenrechner für Lehrer.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Falscher Skill. 'lernprogramm-erstellen' ist für Schüler-Lern-Apps – nicht für Lehrer-Tools. Skill-Verwechslung führt zu falscher Architektur."
+        },
+        {
+          "letter": "D",
+          "text": "Mach mir was für Klassenarbeiten.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Zu vage. 'Was für Klassenarbeiten' kann Notenrechner, Aufgabengenerator, Statistik-Tool oder Korrektur-Helfer sein – jeder ein anderes Projekt."
+        }
+      ],
+      "insight": "Kein Skill heißt nicht 'Code direkt schreiben'. Es heißt: brainstormen, weil keine eingefrorene Architektur dir die Entscheidungen abnimmt."
+    },
+    {
+      "id": 2,
+      "title": "Tech-Stack",
+      "scenario": "Brainstorming geklärt: Pure Punkte-Eingabe, Note-Output, Klassenstatistik, Druck-Layout, KEINE persistente Datenhaltung (Lehrer kopiert sich Output raus). Welcher Stack?",
+      "tip": "Was kann offline laufen, was braucht Server-Logik?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "React + Vite + Tailwind + Zustand-Store + Vitest.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Massiver Overkill. 200 Zeilen Logik in einer Single-Page-App brauchen kein Framework. Setup-Zeit > Entwicklungszeit."
+        },
+        {
+          "letter": "B",
+          "text": "Statisches HTML + Vanilla JS + CSS. Läuft offline, kein Build, eine Datei reicht zum Öffnen.",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Pragma-King. Lehrer sind kein Tech-Team – die wollen ein Tool öffnen und arbeiten. Ein Build-Step, der ein 'npm run dev' braucht, killt die Adoption.",
+          "consoleLog": [
+            "[20:21:08] Stack-Entscheidung:",
+            "[20:21:08]   ↳ HTML/CSS/JS, keine Build-Pipeline",
+            "[20:21:08]   ↳ Single-File auch denkbar (alles in 1 .html)",
+            "[20:21:08]   ↳ Optional: Notenschlüssel als JSON für Erweiterbarkeit",
+            "[20:21:08] Hostbar: GitHub Pages, lokal, USB-Stick, Schul-Intranet"
+          ]
+        },
+        {
+          "letter": "C",
+          "text": "Next.js mit Server-Side Rendering und Auth über Auth0.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Surreal über-engineered. Es gibt keine Daten zum Schützen, keine User-Konten, kein Server-State. Auth0-Setup würde länger dauern als das gesamte Tool."
+        },
+        {
+          "letter": "D",
+          "text": "Native macOS-App in Swift.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Falscher Kontext. Lehrer haben Windows-Schul-Laptops, iPads, Mischsysteme. Web-Tool läuft überall, native App nur auf einer Plattform."
+        }
+      ],
+      "insight": "Tech-Stack folgt Anforderung, nicht Vorliebe. Für ein simples Lehrer-Tool: minimaler Stack, maximale Reichweite. Frameworks sind Schmiermittel für Komplexität – wenn es keine Komplexität gibt, ist Schmiermittel nur klebrig."
+    },
+    {
+      "id": 3,
+      "title": "Plan oder direkt?",
+      "scenario": "Stack steht: Vanilla HTML/JS. Beim Brainstorming sind 5 unklare Punkte aufgetaucht: (1) Welche Notenschlüssel-Tabellen, (2) Variable Aufgabenanzahl, (3) Statistik-Output (welche Kennzahlen), (4) Druck-Layout (A4 hochkant?), (5) Lokalisierung (Komma vs. Punkt). Was machst du?",
+      "tip": "Komplexität oder linearer Build – was beschreibt die Lage?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Leg los, ich klär die Punkte unterwegs.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "5 unklare Entscheidungspunkte sind über meinem Kopf-Limit. Ich werde mittendrin Annahmen treffen, die nicht passen, und du korrigierst dreimal."
+        },
+        {
+          "letter": "B",
+          "text": "Schreib einen Plan in ~/.claude/plans/ mit allen 5 Punkten als Entscheidungen, die abgehakt werden müssen.",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Plan-Mode lohnt sich genau hier: viele Punkte, jede mit eigener Entscheidung. Ich frage nicht 5× nacheinander – du entscheidest einmal kompakt.",
+          "consoleLog": [
+            "[20:34:02] Skill aktiviert: superpowers:writing-plans",
+            "[20:34:02] Erstelle: ~/.claude/plans/[adjective-noun].md",
+            "[20:34:02] Plan-Sektionen:",
+            "[20:34:02]   1. Notenschlüssel (BW G, M, Gym, eigene Schule?)",
+            "[20:34:02]   2. Aufgabenanzahl (fest 5, variabel mit + Button?)",
+            "[20:34:02]   3. Statistik (Schnitt, Median, Notenverteilung?)",
+            "[20:34:02]   4. Druck-Layout (A4, Klassenliste?)",
+            "[20:34:02]   5. Lokalisierung (de-DE Format)",
+            "[20:34:02] User-Approval erbeten, dann linear abarbeiten"
+          ]
+        },
+        {
+          "letter": "C",
+          "text": "Brainstormen wir nochmal, dann ist alles klar.",
+          "score": 3,
+          "verdict": "suboptimal",
+          "feedback": "Brainstorming hatten wir schon. Was fehlt, sind konkrete Entscheidungen – Plan strukturiert das, Brainstorming würde im Kreis laufen."
+        },
+        {
+          "letter": "D",
+          "text": "Mach erstmal nur Notenschlüssel, Rest später.",
+          "score": 5,
+          "verdict": "suboptimal",
+          "feedback": "Scope-Schrumpfung statt Klarheit. Du baust Modul A, dann zeigt Modul B, dass A anders strukturiert sein müsste – und du baust um."
+        }
+      ],
+      "insight": "Plan-Mode ist nicht 'für jedes Projekt', sondern 'wenn 3+ Entscheidungen offen sind'. Eine Landing Page hat keine 3, ein neues Tool oft 5+. Plan ist die schnelle Konsolidierung."
+    },
+    {
+      "id": 4,
+      "title": "Worktree oder nicht",
+      "scenario": "Variante: Es gibt schon ein altes Notenrechner-Repo, das andere Lehrer nutzen. Du sollst Features hinzufügen, ohne das Bestehende zu brechen. Setup?",
+      "tip": "Wann lohnt Isolation, wann ist sie Bürokratie?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Klone Repo, baue direkt auf main weiter, push wenn fertig.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Anderen Lehrern bricht potenziell die laufende Version weg. main = production. Direktarbeiten dort ist gefährlich."
+        },
+        {
+          "letter": "B",
+          "text": "Erstelle einen Worktree für die Features, merge erst nach Abnahme.",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Worktree ist genau hier richtig: bestehender Code, andere Nutzer, Risiko von Regression. Isolation kostet 2 Minuten, spart potenziell Kollegen-Frust.",
+          "consoleLog": [
+            "[20:51:14] Skill: superpowers:using-git-worktrees",
+            "[20:51:14] git worktree add ../notenrechner-feat feat/punkte-pro-aufgabe",
+            "[20:51:14] cd ../notenrechner-feat",
+            "[20:51:14] main bleibt unangetastet, andere Lehrer arbeiten weiter",
+            "[20:51:14] Nach Abnahme: PR + merge"
+          ]
+        },
+        {
+          "letter": "C",
+          "text": "Schreib das Repo komplett neu, das alte ist sowieso veraltet.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Big Rewrite ohne Auftrag. Andere Lehrer haben das alte vielleicht angepasst – du würdest deren Anpassungen unbedacht löschen."
+        },
+        {
+          "letter": "D",
+          "text": "Frag andere Lehrer, ob sie ok sind mit Änderungen.",
+          "score": 5,
+          "verdict": "suboptimal",
+          "feedback": "Sozial richtig, technisch unzureichend. Selbst mit Zustimmung musst du isolieren – Worktree + Feature-Branch ist beides erfüllt."
+        }
+      ],
+      "insight": "Bei neuem Projekt: Worktree ist Overkill. Bei bestehendem Projekt mit anderen Nutzern: Worktree ist Pflicht. Die Frage ist immer: 'Wer könnte mein Tun stören?'"
+    },
+    {
+      "id": 5,
+      "title": "TDD oder nicht",
+      "scenario": "Kern der App ist die Berechnungslogik (Punkte → Note nach BW-Schlüssel). Edge Cases: 0 Punkte, max Punkte, Notensprung-Grenzen. Wie testen?",
+      "tip": "Bei welcher Art Code finden Tests Bugs, die du sonst übersiehst?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "TDD für die Berechnungslogik (mit Edge Cases), keine Tests für UI/CSS.",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Genau richtig getrennt. Mathe-Logik mit Grenzwerten ist klassischer TDD-Sweet-Spot. UI lässt sich besser im Browser prüfen.",
+          "consoleLog": [
+            "[21:02:08] Skill: superpowers:test-driven-development",
+            "[21:02:08] Schreibe erst Tests:",
+            "[21:02:08]   ✓ punkteZuNote(0, 60) === '6'",
+            "[21:02:08]   ✓ punkteZuNote(60, 60) === '1'",
+            "[21:02:08]   ✓ punkteZuNote(45, 60) === '2' (75% = Note 2 BW)",
+            "[21:02:08]   ✓ punkteZuNote(-1, 60) → throws",
+            "[21:02:08] Implementierung gegen Tests",
+            "[21:02:08] UI-Prüfung im Browser, nicht im Test-Runner"
+          ]
+        },
+        {
+          "letter": "B",
+          "text": "Mach erst alles, Tests danach – sonst bremst's.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Bei Mathe-Logik findet man Bugs später nur, indem ein Lehrer eine falsche Note bekommt. TDD vorne kostet 20 Min, spart Peinlichkeit."
+        },
+        {
+          "letter": "C",
+          "text": "Keine Tests, ist ja nur ein kleines Tool.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Klein heißt nicht risikoarm. Notenberechnung ist amtsrelevant – ein Bug an Notensprung-Grenzen kann Klassenarbeitsergebnisse verfälschen."
+        },
+        {
+          "letter": "D",
+          "text": "Vollständige End-to-End-Tests via Cypress / Playwright.",
+          "score": 3,
+          "verdict": "suboptimal",
+          "feedback": "Overkill für ein statisches Tool. E2E ist sinnvoll bei mehreren Seiten und Nutzer-Flows – hier reicht Unit-Test der Berechnung."
+        }
+      ],
+      "insight": "TDD-Skill ist 'rigid', aber das heißt nicht 'überall'. Logik mit Edge Cases: ja. Layout, Animation, einmalige Setup-Skripte: nein. Die Frage ist: kann ein Bug hier still passieren?"
+    },
+    {
+      "id": 6,
+      "title": "Deploy",
+      "scenario": "Tool ist fertig, getestet (Logik via Unit-Tests, UI via Browser). Andere Lehrer sollen es nutzen. Wie verteilst du es?",
+      "tip": "Was war nochmal die Vorgabe in deiner globalen CLAUDE.md zum Thema Deployment?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "GitHub Pages, statisch, kein Build. Eine URL für alle.",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Pflicht-Variante laut deiner globalen CLAUDE.md ('Web-Apps immer für GitHub Pages deployen'). Plus: vor Live-Gang iPad/iOS-Safari prüfen.",
+          "consoleLog": [
+            "[21:18:02] gh repo create notenrechner-bw --public --source=.",
+            "[21:18:04] gh api -X POST repos/.../pages",
+            "[21:18:30] Live: marcolemke78-debug.github.io/notenrechner-bw/",
+            "[21:18:35] iPad-Safari-Test: Touch ✓, Tastatur ✓, Druck-Layout ✓",
+            "[21:18:35] Link an Lehrerzimmer-Gruppe"
+          ]
+        },
+        {
+          "letter": "B",
+          "text": "Vercel mit Auto-Deploy aus GitHub und Custom-Domain.",
+          "score": 5,
+          "verdict": "suboptimal",
+          "feedback": "Geht, aber unnötig. Statisches HTML braucht keine Vercel-Funktionen. CLAUDE.md sagt explizit GitHub Pages – konsistente Wahl über alle Projekte."
+        },
+        {
+          "letter": "C",
+          "text": "Eigener Server bei Hetzner, mit Docker-Container.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Massiv über-engineered. Fixkosten, Wartung, SSL-Erneuerung – für ein statisches Tool, das auch auf USB-Stick laufen würde."
+        },
+        {
+          "letter": "D",
+          "text": "Gar nicht deployen – jeder Lehrer kopiert sich die HTML-Datei lokal.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Cross-Device-Updates kaputt. Wenn du den Notenschlüssel anpasst, hat jeder Lehrer eine andere Version. Konsistenz futsch."
+        }
+      ],
+      "insight": "Deployment-Wahl folgt drei Fragen: Static oder dynamisch? Single-Tenant oder Multi? Update-Häufigkeit? Bei statisch + multi + sporadisch ist GitHub Pages nahezu unschlagbar – kostenlos, immer aktuell, kein Server-Stress."
+    }
+  ],
+  "endings": {
+    "perfect": {
+      "minScore": 90,
+      "title": "🏆 Architektur-Pragmatist",
+      "text": "Du wählst nicht den glänzendsten Stack, sondern den richtigen. Plan vs. direkt, Worktree vs. neu, TDD vs. nicht – sitzt alles."
+    },
+    "great": {
+      "minScore": 70,
+      "title": "🥇 Solider Builder",
+      "text": "Du erkennst, wann Komplexität sich lohnt und wann nicht. Vorsicht: TDD und Plan-Mode sind keine Pflicht für jedes Projekt – nutze sie da, wo sie zahlen."
+    },
+    "good": {
+      "minScore": 50,
+      "title": "🥈 Auf gutem Weg",
+      "text": "Die Faustregeln greifen langsam. Übe besonders das 'Welcher Stack ist der minimal richtige?' – Frameworks sind Schmiermittel, kein Selbstzweck."
+    },
+    "weak": {
+      "minScore": 0,
+      "title": "🥉 Achtung Over-Engineering",
+      "text": "Bei mehreren Antworten hast du zu viel gewählt – React für 200 Zeilen, E2E-Tests für ein statisches Tool. Spiel nochmal mit der Frage: 'Was ist das minimale, das die Anforderung erfüllt?'"
+    }
+  }
+}
