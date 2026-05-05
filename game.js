@@ -225,7 +225,7 @@ function escapeHtml(s) {
 }
 
 // ---- Mission Loading ----------------------------------------
-const APP_VERSION = "0.4";
+const APP_VERSION = "0.5";
 const _missionCache = {};
 async function loadMission(file) {
   if (_missionCache[file]) return _missionCache[file];
@@ -415,8 +415,29 @@ function resetStats() {
   renderMissionGrid();
 }
 
+// ---- file:// Protocol Warning ------------------------------
+function checkFileProtocol() {
+  if (location.protocol !== "file:") return false;
+  const banner = document.createElement("div");
+  banner.style.cssText = "position:fixed;top:0;left:0;right:0;z-index:200;" +
+    "background:#3a1a1a;border-bottom:2px solid #ff3860;color:#ffe0e0;" +
+    "padding:14px 18px;font-family:var(--font-mono);font-size:13px;" +
+    "line-height:1.6;text-align:center;backdrop-filter:blur(6px);";
+  banner.innerHTML =
+    '<strong style="color:#ff3860;">⚠ file://-Protokoll erkannt</strong><br>' +
+    'Beim direkten Öffnen aus dem Finder blockiert Safari den Mission-Load. ' +
+    'Bitte über die Live-URL aufrufen:<br>' +
+    '<a href="https://marcolemke78-debug.github.io/claude-code-trainer/" ' +
+    'style="color:#00ffea;font-weight:700;">' +
+    'marcolemke78-debug.github.io/claude-code-trainer/</a>';
+  document.body.appendChild(banner);
+  document.querySelector("main").style.paddingTop = "120px";
+  return true;
+}
+
 // ---- Init ---------------------------------------------------
 async function init() {
+  checkFileProtocol();
   renderStats();
   renderMissionGrid();
 
