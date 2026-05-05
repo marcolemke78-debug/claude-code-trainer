@@ -225,14 +225,26 @@ function escapeHtml(s) {
 }
 
 // ---- Mission Loading ----------------------------------------
-const APP_VERSION = "v0.3";
+const APP_VERSION = "0.4";
 const _missionCache = {};
 async function loadMission(file) {
   if (_missionCache[file]) return _missionCache[file];
   const url = file + "?v=" + APP_VERSION;
-  const res = await fetch(url, { cache: "no-cache" });
-  if (!res.ok) throw new Error("HTTP " + res.status + " bei " + url);
-  const json = await res.json();
+  // Bewusst KEIN cache:"no-cache" – das löst in Safari "Load failed" aus.
+  // Cache-Busting läuft über die Query-String-Versionierung.
+  let res;
+  try {
+    res = await fetch(url);
+  } catch (e) {
+    throw new Error("Netzwerk: " + (e && e.message ? e.message : e) + " (URL: " + url + ")");
+  }
+  if (!res.ok) throw new Error("HTTP " + res.status + " " + res.statusText + " bei " + url);
+  let json;
+  try {
+    json = await res.json();
+  } catch (e) {
+    throw new Error("JSON-Parse: " + (e && e.message ? e.message : e) + " (URL: " + url + ")");
+  }
   _missionCache[file] = json;
   return json;
 }
