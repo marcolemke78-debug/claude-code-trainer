@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a0a0f">
+<meta name="description" content="Trainings-Spiel für effizientes Arbeiten mit Claude Code">
+<meta property="og:title" content="Claude Code Trainer">
+<meta property="og:description" content="Lerne spielerisch, wann du welches Trigger-Wort, welchen Skill und welches Tool einsetzt.">
+<meta property="og:type" content="website">
+<title>Claude Code Trainer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Animierter Background -->
+<div class="bg-grid" aria-hidden="true"></div>
+<div class="bg-glow" aria-hidden="true"></div>
+<div class="scanlines" aria-hidden="true"></div>
+
+<main id="app">
+
+  <!-- BOOT / START SCREEN -->
+  <section id="screen-start" class="screen active">
+    <div class="boot-frame">
+      <div class="boot-bar">
+        <span class="dot dot-r"></span>
+        <span class="dot dot-y"></span>
+        <span class="dot dot-g"></span>
+        <span class="boot-title">~/claude-code-trainer</span>
+      </div>
+      <div class="boot-body">
+        <pre id="boot-typing" class="boot-typing"></pre>
+      </div>
+    </div>
+
+    <header class="hero">
+      <h1 class="title">CLAUDE CODE</h1>
+      <h2 class="subtitle">// TRAINER</h2>
+      <p class="tagline">Lerne spielerisch, <span class="hl-c">wann</span> du <span class="hl-m">welches</span> Trigger-Wort, welchen Skill, welches Tool einsetzt.</p>
+    </header>
+
+    <div class="start-actions">
+      <button class="btn-primary" id="btn-start">Mission auswählen ▸</button>
+      <div class="stats-strip">
+        <div class="stat"><span class="stat-label">Best</span><span class="stat-value" id="stat-best">—</span></div>
+        <div class="stat"><span class="stat-label">Gespielt</span><span class="stat-value" id="stat-plays">0</span></div>
+        <div class="stat"><span class="stat-label">∑ Punkte</span><span class="stat-value" id="stat-total">0</span></div>
+      </div>
+      <button class="btn-ghost" id="btn-reset">Highscores löschen</button>
+    </div>
+  </section>
+
+  <!-- MISSION SELECT -->
+  <section id="screen-missions" class="screen">
+    <div class="screen-head">
+      <button class="btn-back" data-target="screen-start">◂ Zurück</button>
+      <h2 class="screen-title">Missionen</h2>
+    </div>
+    <div class="mission-grid" id="mission-grid">
+      <!-- gefüllt durch JS -->
+    </div>
+  </section>
+
+  <!-- GAME SCREEN -->
+  <section id="screen-game" class="screen">
+    <header class="game-head">
+      <button class="btn-back" data-target="screen-missions">◂ Abbrechen</button>
+      <div class="game-meta">
+        <div class="game-level">Level <span id="lvl-current">1</span>/<span id="lvl-total">6</span></div>
+        <div class="game-score">⚡ <span id="score-current">0</span></div>
+      </div>
+    </header>
+
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+
+    <article class="scenario-card">
+      <div class="scenario-label">SZENARIO</div>
+      <h3 class="scenario-title" id="level-title">Titel</h3>
+      <p class="scenario-text" id="level-scenario">Szenario-Text</p>
+      <div class="tip-box" id="level-tip-box">
+        <span class="tip-label">💡 Tipp</span>
+        <span id="level-tip"></span>
+      </div>
+    </article>
+
+    <div class="options" id="options">
+      <!-- gefüllt durch JS -->
+    </div>
+  </section>
+
+  <!-- FEEDBACK OVERLAY -->
+  <div class="overlay" id="overlay" aria-hidden="true">
+    <div class="feedback-card">
+      <div class="verdict-row">
+        <div class="verdict-icon" id="verdict-icon">✅</div>
+        <div class="verdict-text">
+          <div class="verdict-label" id="verdict-label">RICHTIG</div>
+          <div class="verdict-points">+<span id="verdict-points">0</span> Punkte</div>
+        </div>
+      </div>
+
+      <div class="feedback-text" id="feedback-text"></div>
+
+      <div class="console-block" id="console-block" hidden>
+        <div class="console-head">// HINTERGRUND-LOG</div>
+        <pre class="console-output" id="console-output"></pre>
+      </div>
+
+      <div class="insight-box">
+        <div class="insight-head">★ Insight</div>
+        <div class="insight-text" id="insight-text"></div>
+      </div>
+
+      <button class="btn-primary" id="btn-next">Weiter ▸</button>
+    </div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <section id="screen-result" class="screen">
+    <div class="result-card">
+      <div class="result-icon" id="result-icon">🏆</div>
+      <h2 class="result-title" id="result-title">Bestanden</h2>
+      <div class="result-score">
+        <span class="result-score-value" id="result-score">0</span>
+        <span class="result-score-max">/ 100</span>
+      </div>
+      <p class="result-text" id="result-text"></p>
+
+      <div class="answer-summary" id="answer-summary"></div>
+
+      <div class="result-actions">
+        <button class="btn-primary" id="btn-replay">↻ Nochmal spielen</button>
+        <button class="btn-ghost" id="btn-back-menu">Zur Missions-Auswahl</button>
+      </div>
+    </div>
+  </section>
+
+</main>
+
+<footer class="page-foot">
+  <span>v0.1 · <a href="https://github.com/marcolemke78-debug/claude-code-trainer" target="_blank" rel="noopener">GitHub</a></span>
+  <button class="btn-mute" id="btn-mute" aria-pressed="false" title="Sound an/aus">🔊</button>
+</footer>
+
+<script src="game.js"></script>
+</body>
+</html>

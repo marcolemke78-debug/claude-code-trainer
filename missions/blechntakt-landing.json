@@ -1,0 +1,308 @@
+{
+  "id": "blechntakt-landing",
+  "title": "Landing Page für Blech'N'Takt",
+  "subtitle": "Sommerkonzert 15.07.2026",
+  "icon": "🎺",
+  "difficulty": 1,
+  "tagline": "Lerne, wann du welches Trigger-Wort einsetzt – am Beispiel einer Band-Landing-Page.",
+  "totalScore": 100,
+  "intro": "Donnerstag, 21:30 Uhr. Auf der Bandprobe wurde beschlossen: Das Sommerkonzert am 15. Juli 2026 im Stadtpark soll eine eigene Landing Page bekommen. Du sitzt am Mac, öffnest das Terminal und tippst 'cc'. Claude Code startet. Der Cursor blinkt.",
+  "levels": [
+    {
+      "id": 1,
+      "title": "Der erste Satz zählt",
+      "scenario": "Was tippst du als allerersten Prompt?",
+      "tip": "Denk an die Faustregel: kreative Entscheidung oder bekanntes Muster?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Bau mir eine Landing Page für unser Sommerkonzert am 15.07. mit Programm, Anfahrt, Galerie. Farben rot und schwarz.",
+          "score": 5,
+          "verdict": "suboptimal",
+          "feedback": "Wirkt vernünftig, hätte aber sofort Code ausgelöst – ohne Brainstorming zu Programm, Galerie-Quelle, Ticketshop-URL etc. Du hättest 5x nachjustiert."
+        },
+        {
+          "letter": "B",
+          "text": "Ich möchte eine Landing Page für Blech'N'Takt bauen – Sommerkonzert 15.07.2026. Lass uns brainstormen.",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Perfekt. 'Blech'N'Takt' lädt Memories, 'brainstormen' aktiviert den Skill, Datum gibt Kontext.",
+          "consoleLog": [
+            "[15:47:02] User-Prompt empfangen",
+            "[15:47:02] Trigger-Scan: \"Blech'N'Takt\" → Memory-Lookup",
+            "[15:47:02] geladen: project_blechntakt.md",
+            "[15:47:02]   ↳ Brand-Farben: #B22325 / #161618",
+            "[15:47:02]   ↳ Logo-Pfad bekannt",
+            "[15:47:02] Trigger-Scan: \"brainstormen\" → Skill-Lookup",
+            "[15:47:02] aktiviert: superpowers:brainstorming",
+            "[15:47:02] Datum-Kontext: Konzert in 71 Tagen",
+            "[15:47:02] Modus: Stelle gezielte Fragen, KEIN Code-Output"
+          ]
+        },
+        {
+          "letter": "C",
+          "text": "/lernprogramm-erstellen Landing Page Blech'N'Takt",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Falscher Skill-Trigger. 'lernprogramm-erstellen' ist für Schul-Lern-Apps für Leonie – nicht für Band-Landing-Pages. Skill-Verwechslung."
+        },
+        {
+          "letter": "D",
+          "text": "Erstelle ein neues Verzeichnis, init git repo, npm init, install vite, react, tailwind.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Tool-Befehle ohne Plan. Eine kleine Konzert-Page braucht weder React noch Vite. Memory weiß: GitHub Pages, statisches HTML reicht."
+        }
+      ],
+      "insight": "Brainstormen vorne kostet 2 Min, spart 30 Min hinten. Der erste Satz entscheidet, welche Skills und Memories laden – wähle ihn bewusst."
+    },
+    {
+      "id": 2,
+      "title": "Nach dem Brainstorming",
+      "scenario": "Wir haben 8 Min gebrainstormt. Anforderungen stehen: Hero, Programm-Liste (8 Stücke), Galerie aus 6 Probefotos, Anfahrt mit Karte, externer Tickets-Button, mobile-first. Ich frage: 'Soll ich loslegen?'",
+      "tip": "Aufwand vs. Nutzen. Eine Landing Page ist nicht das KOIN-Lernprogramm mit 43 Lektionen.",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Stop – schreib mir erst einen Plan in ~/.claude/plans/.",
+          "score": 5,
+          "verdict": "suboptimal",
+          "feedback": "Funktioniert, ist aber Overkill. Pläne lohnen bei (1) Komplexität, die ich nicht im Kopf halte, oder (2) unsicheren Entscheidungspunkten. Lineare Builds brauchen keinen."
+        },
+        {
+          "letter": "B",
+          "text": "Hast du auch wirklich die Brand-Farben? Logo? Typo?",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Babysitting. Memory hat alles beim Wort 'Blech'N'Takt' automatisch geladen. Du erklärst mir mein eigenes Lade-Verhalten."
+        },
+        {
+          "letter": "C",
+          "text": "Leg los.",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Profi-Move. Bei klarem Schema vertraust du dem Brainstorming-Output und baust direkt.",
+          "consoleLog": [
+            "[15:55:01] User: 'Leg los'",
+            "[15:55:01] Skill brainstorming → exit (Anforderungen stehen)",
+            "[15:55:01] Build-Modus aktiv",
+            "[15:55:01] Read: ~/Desktop/blechntakt-assets/logo.svg",
+            "[15:55:01] Plan eingespart: ~90s",
+            "[15:55:02] Write: index.html, style.css, gallery.js"
+          ]
+        },
+        {
+          "letter": "D",
+          "text": "Mach das in einem isolierten Worktree, falls was schiefgeht.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Worktrees sind für isolierte Feature-Branches in bestehenden Repos. Bei einem leeren Ordner für ein neues Projekt ist das überflüssige Komplexität."
+        }
+      ],
+      "insight": "Pläne sind Werkzeug gegen Komplexität und Unsicherheit. Eine Landing Page mit 5 Sektionen hat beides nicht – ein Plan würde nur ungelesen verstauben."
+    },
+    {
+      "id": 3,
+      "title": "Der gefährlichste Moment",
+      "scenario": "Ich baue 4 Minuten lang. Dann schreibe ich: 'Fertig! Die Landing Page steht. index.html, style.css und gallery.js sind erstellt. Ready für Deploy.'",
+      "tip": "Was sagt mein interner 'Fertig!'-Reflex über die tatsächliche Funktionsfähigkeit?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Super! Dann push auf GitHub Pages.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Falle. Mein 'Fertig!' ist ein Reflex, kein Beweis. Du deployst möglicherweise eine kaputte Page. Skill verification-before-completion sagt: evidence before assertions."
+        },
+        {
+          "letter": "B",
+          "text": "Stop – hast du sie im Browser geöffnet und durchgeklickt?",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Genau richtig. Verhalten vor Code. Nur das Öffnen im Browser zeigt, ob die Lightbox klickbar, der Tickets-Button erreichbar und die Galerie scrollbar ist.",
+          "consoleLog": [
+            "[15:59:45] Skill verification-before-completion aktiv",
+            "[15:59:45] Bash: python3 -m http.server 8000",
+            "[15:59:46] Browser: http://localhost:8000",
+            "[15:59:50] Klick-Test: Hero ✓ Programm ✓ Galerie ✗ Anfahrt ✓",
+            "[15:59:51] ⚠️ Galerie-Lightbox öffnet nicht",
+            "[15:59:51] 'Fertig!' zurückgenommen → 3 Bugs gefunden"
+          ]
+        },
+        {
+          "letter": "C",
+          "text": "Mach mir einen Screenshot zum Anschauen.",
+          "score": 5,
+          "verdict": "suboptimal",
+          "feedback": "Halbweg richtig. Ein Screenshot zeigt einen Zustand, nicht Interaktion. Die Galerie-Lightbox bleibt unentdeckt."
+        },
+        {
+          "letter": "D",
+          "text": "Lass den Review-Skill laufen, bevor wir weitermachen.",
+          "score": 10,
+          "verdict": "suboptimal",
+          "feedback": "Solide, aber B kommt zuerst. Review-Agents lesen Code – sie sehen nicht, dass die Lightbox auf iOS Safari einen Z-Index-Bug hat. Verhalten vor Code."
+        }
+      ],
+      "insight": "Code-Review prüft Code. Verification prüft Verhalten. Bevor du 'fertig' akzeptierst: Browser, klicken, scrollen. Erst dann Review."
+    },
+    {
+      "id": 4,
+      "title": "Mobile-Test deckt Bugs auf",
+      "scenario": "Mobile-Test auf iPad-Safari findet 3 Probleme: 🐛 Galerie-Lightbox öffnet nicht. 🐛 Hero-Bild ist 8 MB groß. 🐛 OG-Tags fehlen für WhatsApp-Sharing. Ich frage: 'Wie soll ich vorgehen?'",
+      "tip": "Hängen die 3 Bugs voneinander ab – oder sind sie unabhängig?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Eins nach dem anderen, von oben nach unten.",
+          "score": 5,
+          "verdict": "suboptimal",
+          "feedback": "Funktioniert, ist aber 4× langsamer. Die 3 Bugs sind komplett unabhängig (gallery.js, hero.jpg, head meta) – kein Grund für Sequenz."
+        },
+        {
+          "letter": "B",
+          "text": "Starte 3 parallele Subagents – jeder fixt ein Problem.",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Volltreffer. 0 shared state, 0 dependencies → perfekter Fall für dispatching-parallel-agents.",
+          "consoleLog": [
+            "[16:02:14] Skill dispatching-parallel-agents aktiv",
+            "[16:02:14] Spawne 3 Subagents in EINEM Tool-Block",
+            "[16:02:18] Subagent A: Lightbox-Event-Bug gefixt",
+            "[16:02:21] Subagent B: Hero auf 280 KB komprimiert + WebP",
+            "[16:02:19] Subagent C: og:image, og:title, og:description gesetzt",
+            "[16:02:21] ⏱ Gesamtzeit: 7s statt sequenziell ~25s"
+          ]
+        },
+        {
+          "letter": "C",
+          "text": "Lass die Bugs, deploy mal so. Hauptsache online.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Falle. Eine kaputte Page online ist schlechter als gar keine. WhatsApp-Sharing ohne OG-Tags = peinliche Vorschau."
+        },
+        {
+          "letter": "D",
+          "text": "Lass uns nochmal brainstormen, ob die Page so überhaupt Sinn macht.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Backwards. Die Probleme sind klar definiert, keine Scope-Frage. Brainstorming wäre Flucht vor der konkreten Arbeit."
+        }
+      ],
+      "insight": "Subagents müssen in EINEM Message-Block parallel starten – nicht hintereinander. Sonst genauso langsam wie selber machen, plus Overhead."
+    },
+    {
+      "id": 5,
+      "title": "Die unsichtbare Aufgabe",
+      "scenario": "Bugs gefixt, Page läuft, Mobile grün. Beim Fixen ist dir aufgefallen: Bei jeder zukünftigen BNT-Galerie sollten Lazy Loading + WebP Standard sein. Wie sicherst du diese Erkenntnis, damit sie beim nächsten Mal automatisch greift?",
+      "tip": "Wer ist die Zielgruppe für diese Erkenntnis – du, oder ich beim nächsten Chat?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Egal – ich merk's mir schon, du fragst mich dann eh nochmal.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Häufiger Fehler. Es gibt kein 'Erinnerungsvermögen' bei mir. Jeder Chat startet bei null außer dem, was in Memory steht."
+        },
+        {
+          "letter": "B",
+          "text": "Trag das in die globale CLAUDE.md unter 'Coding-Präferenzen' ein.",
+          "score": 5,
+          "verdict": "suboptimal",
+          "feedback": "Falscher Container. CLAUDE.md ist global → würde bei Java-Aufgaben, GoWin, Lernprogrammen mitgeladen. Pollution."
+        },
+        {
+          "letter": "C",
+          "text": "Speichere das als Memory-Eintrag, z.B. feedback_blechntakt_mobile.md mit Eintrag in MEMORY.md.",
+          "score": 15,
+          "verdict": "correct",
+          "feedback": "Genau richtig. Spezifischer Kontext, kontrollierte Sichtbarkeit, automatisches Laden bei BNT-Triggern.",
+          "consoleLog": [
+            "[16:09:33] Memory-Write",
+            "[16:09:33] Erstelle: feedback_blechntakt_mobile.md",
+            "[16:09:33] Frontmatter: type: feedback",
+            "[16:09:33] Body: Regel + Why + How to apply",
+            "[16:09:33] Update MEMORY.md Index unter 'Blech'N'Takt'",
+            "[16:09:33] ✅ Persistiert. Nächste Session lädt das automatisch."
+          ]
+        },
+        {
+          "letter": "D",
+          "text": "Erweitere den blechntakt-instagram-Skill um den Punkt.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Kategorie-Verwechslung. Skill ist für Instagram-Posts, nicht Web-Pages. Memory ist für Wissen, Skills sind für Workflows."
+        }
+      ],
+      "insight": "Memory ist mein Gehirn für künftige Chats. Die 'How to apply'-Zeile ist der Schlüssel: Sie sagt mir, WANN diese Erinnerung relevant wird."
+    },
+    {
+      "id": 6,
+      "title": "Eine Woche später",
+      "scenario": "12. Mai. Bandkollege Tobi schreibt: 'Hey, machen wir auch ne Landing Page fürs Winterkonzert am 10.12.?' Du öffnest ein neues Claude Code Fenster. Was tippst du?",
+      "tip": "Was ist beim zweiten Mal anders als beim ersten? Was kann ich automatisch, was musst du explizit machen?",
+      "options": [
+        {
+          "letter": "A",
+          "text": "Ich möchte eine Landing Page für Blech'N'Takt – Winterkonzert 10.12.2026. Lass uns brainstormen.",
+          "score": 8,
+          "verdict": "suboptimal",
+          "feedback": "Defensiv. Nicht falsch, aber Brainstorming wäre Wiederholung dessen, was schon im Sommer-Repo + Memory steht. ~4 Min Verschwendung."
+        },
+        {
+          "letter": "B",
+          "text": "Bau eine Landing Page fürs Winterkonzert am 10.12.2026 nach dem Schema vom Sommer-Konzert. Nutze die Mobile-Erkenntnisse aus dem letzten Mal.",
+          "score": 20,
+          "verdict": "correct",
+          "feedback": "Profi-Move. 'Blech'N'Takt' lädt Memories automatisch, 'Schema vom Sommer-Konzert' verweist auf existierenden Code, 'Mobile-Erkenntnisse' triggert das gespeicherte Feedback.",
+          "consoleLog": [
+            "[16:15:08] Trigger-Scan: 'Blech'N'Takt'",
+            "[16:15:08]   ↳ auto-load: project_blechntakt.md",
+            "[16:15:08]   ↳ auto-load: feedback_blechntakt_mobile.md (Lazy + WebP!)",
+            "[16:15:08] Trigger-Scan: 'Schema vom Sommer-Konzert'",
+            "[16:15:08]   ↳ Read: ~/Desktop/blechntakt-sommer-2026/index.html",
+            "[16:15:08] KEIN Brainstorming, KEIN Plan",
+            "[16:15:09] ⏱ Zeit bis erster Output: 1 Sekunde"
+          ]
+        },
+        {
+          "letter": "C",
+          "text": "Lade alle BNT-Memories und Web-Skills. Dann lass uns überlegen, wie wir am besten vorgehen.",
+          "score": 0,
+          "verdict": "wrong",
+          "feedback": "Babysitting maximiert. Du erklärst mir mein eigenes Lade-Verhalten. Memories und Skills triggern AUTOMATISCH durch Schlüsselwörter."
+        },
+        {
+          "letter": "D",
+          "text": "Mach es genauso wie letztes Mal.",
+          "score": 5,
+          "verdict": "suboptimal",
+          "feedback": "Im Geist richtig, aber zu vage. 'Wie letztes Mal' hat keinen technischen Hook – ich rate, was du meinst."
+        }
+      ],
+      "insight": "Der erste Lauf ist Investition. Der zweite Lauf erntet sie: weniger Worte, schnellerer Start, automatische Reflexe. Bei 5+ Wiederholungen lohnt ein eigener Skill."
+    }
+  ],
+  "endings": {
+    "perfect": {
+      "minScore": 95,
+      "title": "🏆 Claude-Code-Whisperer",
+      "text": "Du hast jeden Trigger sitzen. Bei dir laufen Memories, Skills und Subagents wie ein Uhrwerk."
+    },
+    "great": {
+      "minScore": 75,
+      "title": "🥇 Bestanden mit Auszeichnung",
+      "text": "Du verstehst das System. Ein paar Reflexe sind noch defensiv – trau dir mehr 'Leg los' zu."
+    },
+    "good": {
+      "minScore": 55,
+      "title": "🥈 Solide Grundlage",
+      "text": "Du kennst die wichtigsten Trigger. Achte besonders auf Verification vor Fertigmeldung."
+    },
+    "weak": {
+      "minScore": 0,
+      "title": "🥉 Noch Übung nötig",
+      "text": "Spiel die Mission nochmal – die Insights wirken erst beim zweiten Durchgang. Das ist der Sinn der Übung."
+    }
+  }
+}
